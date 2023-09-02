@@ -15,7 +15,7 @@ class SkillXPAccumulator(
     private val plugin: EcoPlugin,
     private val skill: Skill
 ) : Accumulator {
-    override fun accept(player: Player, count: Double) {
+    override fun accept(player: Player, count: Double, extra: Double) {
         if (plugin.configYml.getBool("skills.prevent-levelling-while-afk") && AFKManager.isAfk(player)) {
             return
         }
@@ -28,7 +28,7 @@ class SkillXPAccumulator(
             return
         }
 
-        player.gainSkillXP(skill, count)
+        player.gainSkillXP(skill, count, extra)
     }
 }
 

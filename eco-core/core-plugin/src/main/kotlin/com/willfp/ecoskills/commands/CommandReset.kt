@@ -19,22 +19,10 @@ class CommandReset(plugin: EcoPlugin) :
     ) {
 
     override fun onExecute(sender: CommandSender, args: List<String>) {
-        val players = offlinePlayers(args, 0, "invalid-player")
+        val player = notifyPlayerRequired(args.getOrNull(0), "invalid-player")
+        player.resetSkills()
 
-        if (players.size > 1) {
-            sender.sendMessage(plugin.langYml.getMessage("resetting-all-players"))
-        }
-
-        for (player in players) {
-            player.resetSkills()
-        }
-
-        if (players.size > 1) {
-            sender.sendMessage(plugin.langYml.getMessage("reset-all-players"))
-            return
-        } else {
-            sender.sendMessage(plugin.langYml.getMessage("reset-player"))
-        }
+        sender.sendMessage(plugin.langYml.getMessage("reset-player"))
     }
 
     override fun tabComplete(sender: CommandSender, args: List<String>): List<String> {
@@ -43,7 +31,7 @@ class CommandReset(plugin: EcoPlugin) :
         if (args.size == 1) {
             StringUtil.copyPartialMatches(
                 args[0],
-                listOf("all") union Bukkit.getOnlinePlayers().map { player -> player.name },
+                Bukkit.getOnlinePlayers().map { player -> player.name }.toCollection(ArrayList()),
                 completions
             )
             return completions

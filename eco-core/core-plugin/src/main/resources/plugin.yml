@@ -13,11 +13,10 @@ commands:
   ecoskills:
     description: Base Command
     permission: ecoskills.command.ecoskills
-  skills:
+  jobs:
     aliases:
-      - stats
-      - skill
-    description: Open the skills menu
+      - job
+    description: Open the jobs menu
     permission: ecoskills.command.skills
 
 permissions:

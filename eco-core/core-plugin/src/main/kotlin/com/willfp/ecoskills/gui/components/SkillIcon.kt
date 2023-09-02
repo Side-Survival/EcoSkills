@@ -4,6 +4,7 @@ import com.willfp.eco.core.EcoPlugin
 import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.gui.menu.Menu
 import com.willfp.eco.core.gui.onLeftClick
+import com.willfp.eco.core.gui.onRightClick
 import com.willfp.eco.core.gui.slot
 import com.willfp.eco.core.gui.slot.Slot
 import com.willfp.eco.core.items.Items
@@ -11,6 +12,7 @@ import com.willfp.eco.core.items.builder.modify
 import com.willfp.eco.util.lineWrap
 import com.willfp.ecoskills.api.getSkillLevel
 import com.willfp.ecoskills.skills.Skill
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 class SkillIcon(
@@ -41,6 +43,23 @@ class SkillIcon(
     }) {
         onLeftClick { player, _, _, _ ->
             skill.levelGUI.open(player)
+        }
+        val rClickCommands = config.getStrings("right-click")
+        onRightClick { player, _, _, _ ->
+            for (command in rClickCommands) {
+                if (command.startsWith("console:")) {
+                    Bukkit.dispatchCommand(
+                        Bukkit.getConsoleSender(),
+                        command.replaceFirst("console:", "")
+                            .replace("%player%", player.name)
+                    )
+                } else {
+                    Bukkit.dispatchCommand(
+                        player,
+                        command.replace("%player%", player.name)
+                    )
+                }
+            }
         }
     }
 

@@ -10,7 +10,7 @@ import org.bukkit.util.StringUtil
 
 class CommandSkills(plugin: EcoPlugin) : PluginCommand(
     plugin,
-    "skills",
+    "jobs",
     "ecoskills.command.skills",
     true
 ) {

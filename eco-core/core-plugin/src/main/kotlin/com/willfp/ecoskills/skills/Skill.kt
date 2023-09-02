@@ -20,6 +20,7 @@ import com.willfp.ecoskills.api.getSkillXP
 import com.willfp.ecoskills.effects.Effects
 import com.willfp.ecoskills.gui.components.SkillIcon
 import com.willfp.ecoskills.gui.menus.SkillLevelGUI
+import com.willfp.ecoskills.libreforge.TriggerGainSkillXp
 import com.willfp.ecoskills.libreforge.TriggerLevelUpSkill
 import com.willfp.ecoskills.stats.Stats
 import com.willfp.ecoskills.util.InvalidConfigurationException
@@ -50,6 +51,11 @@ class Skill(
     private val xpGainMethods = config.getSubsections("xp-gain-methods").mapNotNull {
         Counters.compile(it, ViolationContext(plugin, "Skill $id xp-gain-methods"))
     }
+
+    private val effects = com.willfp.libreforge.effects.Effects.compile(
+        config.getSubsections("effects"),
+        ViolationContext(plugin, "Skill $id effects")
+    )
 
     val conditions = Conditions.compile(
         config.getSubsections("conditions"),
@@ -245,6 +251,25 @@ class Skill(
     fun giveRewards(player: OfflinePlayer, level: Int) {
         for (reward in rewards) {
             reward.giveTo(player, level)
+        }
+    }
+
+    internal fun handleXpGive(player: OfflinePlayer, level: Int, extra: Double) {
+        if (player is Player) {
+            effects.trigger(
+                DispatchedTrigger(
+                    player,
+                    TriggerGainSkillXp,
+                    TriggerData(
+                        holder = EmptyProvidedHolder,
+                        player = player
+                    )
+                ).apply {
+                    addPlaceholder(NamedValue("level", level))
+                    addPlaceholder(NamedValue("level_numeral", level.toNumeral()))
+                    addPlaceholder(NamedValue("extra", extra))
+                }
+            )
         }
     }
 

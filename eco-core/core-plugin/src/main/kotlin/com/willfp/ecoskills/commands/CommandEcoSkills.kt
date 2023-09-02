@@ -13,6 +13,7 @@ class CommandEcoSkills(plugin: EcoPlugin) : PluginCommand(
     init {
         this.addSubcommand(CommandReload(plugin))
             .addSubcommand(CommandGive(plugin))
+            .addSubcommand(CommandSetLevel(plugin))
             .addSubcommand(CommandReset(plugin))
             .addSubcommand(CommandRecount(plugin))
     }
