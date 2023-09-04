@@ -16,6 +16,7 @@ commands:
   jobs:
     aliases:
       - job
+      - darbi
     description: Open the jobs menu
     permission: ecoskills.command.skills
 

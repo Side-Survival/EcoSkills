@@ -44,22 +44,8 @@ class SkillIcon(
         onLeftClick { player, _, _, _ ->
             skill.levelGUI.open(player)
         }
-        val rClickCommands = config.getStrings("right-click")
         onRightClick { player, _, _, _ ->
-            for (command in rClickCommands) {
-                if (command.startsWith("console:")) {
-                    Bukkit.dispatchCommand(
-                        Bukkit.getConsoleSender(),
-                        command.replaceFirst("console:", "")
-                            .replace("%player%", player.name)
-                    )
-                } else {
-                    Bukkit.dispatchCommand(
-                        player,
-                        command.replace("%player%", player.name)
-                    )
-                }
-            }
+            skill.levelGUI.open(player)
         }
     }
 
