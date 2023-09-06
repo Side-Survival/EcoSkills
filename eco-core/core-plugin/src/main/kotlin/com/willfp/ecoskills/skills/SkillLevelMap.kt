@@ -24,13 +24,15 @@ class SkillLevelMap(
         skill.setSavedXP(player, level.xp)
     }
 
-    fun giveXP(skill: Skill, xp: Double, extra: Double) {
+    fun giveXP(skill: Skill, xp: Double, extra: Double, over: Boolean) {
         require(xp >= 0) { "XP must be positive" }
 
         val current = this[skill]
 
         val required = skill.getXPRequired(current.level)
-        skill.handleXpGive(player, current.level, extra)
+        if (!over) {
+            skill.handleXpGive(player, current.level, xp, extra)
+        }
 
         return if (current.xp + xp >= required && current.level < skill.maxLevel) {
             val overshoot = current.xp + xp - required
@@ -52,7 +54,7 @@ class SkillLevelMap(
 
             skill.handleLevelUp(player, current.level + 1)
 
-            giveXP(skill, overshoot, extra) // For recursive level gains.
+            giveXP(skill, overshoot, extra, true) // For recursive level gains.
         } else {
             this[skill] = SkillLevel(
                 current.level,
@@ -73,9 +75,9 @@ class SkillLevelMap(
 
             Bukkit.getPluginManager().callEvent(event)
 
-            giveXP(skill, event.gainedXP, extra)
+            giveXP(skill, event.gainedXP, extra, false)
         } else {
-            giveXP(skill, xp, extra)
+            giveXP(skill, xp, extra, false)
         }
     }
 

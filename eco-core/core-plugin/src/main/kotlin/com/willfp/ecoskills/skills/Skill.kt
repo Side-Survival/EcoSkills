@@ -254,7 +254,7 @@ class Skill(
         }
     }
 
-    internal fun handleXpGive(player: OfflinePlayer, level: Int, extra: Double) {
+    internal fun handleXpGive(player: OfflinePlayer, level: Int, xp: Double, extra: Double) {
         if (player is Player) {
             effects.trigger(
                 DispatchedTrigger(
@@ -265,6 +265,7 @@ class Skill(
                         player = player
                     )
                 ).apply {
+                    addPlaceholder(NamedValue("xp", xp))
                     addPlaceholder(NamedValue("level", level))
                     addPlaceholder(NamedValue("level_numeral", level.toNumeral()))
                     addPlaceholder(NamedValue("extra", extra))

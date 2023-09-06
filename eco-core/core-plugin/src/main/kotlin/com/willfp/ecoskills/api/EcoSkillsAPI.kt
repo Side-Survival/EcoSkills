@@ -51,10 +51,10 @@ fun OfflinePlayer.gainSkillXP(skill: Skill, xp: Double, extra: Double): Unit =
     this.skills.gainXP(skill, xp, extra)
 
 fun OfflinePlayer.giveSkillXP(skill: Skill, xp: Double): Unit =
-    this.skills.giveXP(skill, xp, 0.0)
+    this.skills.giveXP(skill, xp, 0.0, false)
 
 fun OfflinePlayer.giveSkillXP(skill: Skill, xp: Double, extra: Double): Unit =
-    this.skills.giveXP(skill, xp, extra)
+    this.skills.giveXP(skill, xp, extra, false)
 
 fun OfflinePlayer.getRequiredXP(skill: Skill) =
     skill.getXPRequired(this.getSkillLevel(skill))
