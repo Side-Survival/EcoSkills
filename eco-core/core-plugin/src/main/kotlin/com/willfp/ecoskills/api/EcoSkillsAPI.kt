@@ -78,6 +78,9 @@ fun OfflinePlayer.setSkillLevel(skill: Skill, level: Int) {
     )
 }
 
+fun OfflinePlayer.setSkillLevel(skill: Skill, level: Int) =
+    this.skills.set(skill, SkillLevel(level, 0.0))
+
 val OfflinePlayer.totalSkillLevel: Int
     get() = Skills.values().sumOf { this.getSkillLevel(it) }
 

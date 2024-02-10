@@ -8,8 +8,17 @@
 # cross-server sync.
 use-local-storage: false
 
+# Worlds that EcoSkills should be disabled in
+disabled-in-worlds:
+  - world_1
+  - world_2
+
 gui:
   rows: 6
+
+  # The amount of time (in milliseconds) that the GUI icons should be cached for
+  # Prevents spamming the GUI to cause lag
+  cache-ttl: 2000
 
   mask:
     # The way the mask works is by having a list of materials

@@ -1,5 +1,6 @@
 package com.willfp.ecoskills.gui.components
 
+import com.github.benmanes.caffeine.cache.Caffeine
 import com.willfp.eco.core.EcoPlugin
 import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.gui.menu.Menu
@@ -11,9 +12,17 @@ import com.willfp.eco.core.items.Items
 import com.willfp.eco.core.items.builder.modify
 import com.willfp.eco.util.lineWrap
 import com.willfp.ecoskills.api.getSkillLevel
+import com.willfp.ecoskills.plugin
 import com.willfp.ecoskills.skills.Skill
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
+import java.util.UUID
+import java.util.concurrent.TimeUnit
+
+private val iconCache = Caffeine.newBuilder()
+    .expireAfterWrite(plugin.configYml.getInt("gui.cache-ttl").toLong(), TimeUnit.MILLISECONDS)
+    .build<Int, ItemStack>()
 
 class SkillIcon(
     private val skill: Skill,
@@ -24,21 +33,23 @@ class SkillIcon(
         get() = field.clone()
 
     private val slot = slot({ player, _ ->
-        val level = player.getSkillLevel(skill)
+        iconCache.get(player.uniqueId.hashCode() xor skill.hashCode()) {
+            val level = player.getSkillLevel(skill)
 
-        baseIcon.modify {
-            setDisplayName(
-                plugin.configYml.getFormattedString("gui.skill-icon.name")
-                    .replace("%skill%", skill.name)
-                    .let { skill.addPlaceholdersInto(it, level) }
-            )
+            baseIcon.modify {
+                setDisplayName(
+                    plugin.configYml.getFormattedString("gui.skill-icon.name")
+                        .replace("%skill%", skill.name)
+                        .let { skill.addPlaceholdersInto(it, level) }
+                )
 
-            addLoreLines(
-                skill.addPlaceholdersInto(
-                    plugin.configYml.getStrings("gui.skill-icon.lore"),
-                    player
-                ).lineWrap(plugin.configYml.getInt("gui.skill-icon.line-wrap"))
-            )
+                addLoreLines(
+                    skill.addPlaceholdersInto(
+                        plugin.configYml.getStrings("gui.skill-icon.lore"),
+                        player
+                    ).lineWrap(plugin.configYml.getInt("gui.skill-icon.line-wrap"))
+                )
+            }
         }
     }) {
         onLeftClick { player, _, _, _ ->

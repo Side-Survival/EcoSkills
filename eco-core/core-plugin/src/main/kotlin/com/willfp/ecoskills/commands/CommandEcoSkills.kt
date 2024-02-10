@@ -16,6 +16,7 @@ class CommandEcoSkills(plugin: EcoPlugin) : PluginCommand(
             .addSubcommand(CommandSetLevel(plugin))
             .addSubcommand(CommandReset(plugin))
             .addSubcommand(CommandRecount(plugin))
+            .addSubcommand(CommandSet(plugin))
     }
 
     override fun onExecute(sender: CommandSender, args: List<String>) {

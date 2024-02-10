@@ -7,6 +7,7 @@ import com.willfp.eco.core.data.profile
 import com.willfp.eco.core.map.defaultMap
 import com.willfp.eco.core.placeholder.PlayerPlaceholder
 import com.willfp.eco.core.placeholder.context.placeholderContext
+import com.willfp.eco.util.containsIgnoreCase
 import com.willfp.eco.util.evaluateExpression
 import com.willfp.eco.util.formatEco
 import com.willfp.eco.util.toNiceString
@@ -22,6 +23,7 @@ import com.willfp.ecoskills.gui.components.SkillIcon
 import com.willfp.ecoskills.gui.menus.SkillLevelGUI
 import com.willfp.ecoskills.libreforge.TriggerGainSkillXp
 import com.willfp.ecoskills.libreforge.TriggerLevelUpSkill
+import com.willfp.ecoskills.plugin
 import com.willfp.ecoskills.stats.Stats
 import com.willfp.ecoskills.util.InvalidConfigurationException
 import com.willfp.ecoskills.util.LevelInjectable
@@ -32,6 +34,7 @@ import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.conditions.Conditions
 import com.willfp.libreforge.counters.Counters
 import com.willfp.libreforge.effects.executors.impl.NormalExecutorFactory
+import com.willfp.libreforge.toDispatcher
 import com.willfp.libreforge.triggers.DispatchedTrigger
 import com.willfp.libreforge.triggers.TriggerData
 import org.bukkit.OfflinePlayer
@@ -76,7 +79,8 @@ class Skill(
             reward,
             it.getInt("levels"),
             it.getIntOrNull("start-level"),
-            it.getIntOrNull("end-level")
+            it.getIntOrNull("end-level"),
+            it.getIntOrNull("every")
         )
     }
 
@@ -281,10 +285,9 @@ class Skill(
             // I don't really know a way to clean this up
             levelUpEffects?.trigger(
                 DispatchedTrigger(
-                    player,
+                    player.toDispatcher(),
                     TriggerLevelUpSkill,
                     TriggerData(
-                        holder = EmptyProvidedHolder,
                         player = player
                     )
                 ).apply {
@@ -309,3 +312,6 @@ class Skill(
 
 internal val OfflinePlayer.skills: SkillLevelMap
     get() = SkillLevelMap(this)
+
+val Player.isInDisabledWorld: Boolean
+    get() = plugin.configYml.getStrings("disabled-in-worlds").containsIgnoreCase(world.name)
