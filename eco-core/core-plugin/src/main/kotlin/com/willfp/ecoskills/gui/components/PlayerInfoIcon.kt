@@ -8,7 +8,6 @@ import com.willfp.eco.core.items.builder.SkullBuilder
 import com.willfp.eco.core.placeholder.context.placeholderContext
 import com.willfp.eco.util.formatEco
 import com.willfp.eco.util.savedDisplayName
-import com.willfp.ecoskills.gui.menus.StatsGUI
 import com.willfp.ecoskills.plugin
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
@@ -58,13 +57,7 @@ class PlayerInfoIcon(
                 itemMeta = meta
             }
         }
-    }) {
-        if (opensStatMenu) {
-            onLeftClick { player, _, _, _ ->
-                StatsGUI.open(player)
-            }
-        }
-    }
+    }) {}
 
     override val row: Int = config.getInt("row")
     override val column: Int = config.getInt("column")

@@ -71,12 +71,6 @@ fun OfflinePlayer.getSkillProgress(skill: Skill): Double {
 
 fun OfflinePlayer.getSkillLevel(skill: Skill): Int =
     this.skills[skill].level
-fun OfflinePlayer.setSkillLevel(skill: Skill, level: Int) {
-    this.skills[skill] = SkillLevel(
-        level,
-        0.0
-    )
-}
 
 fun OfflinePlayer.setSkillLevel(skill: Skill, level: Int) =
     this.skills.set(skill, SkillLevel(level, 0.0))

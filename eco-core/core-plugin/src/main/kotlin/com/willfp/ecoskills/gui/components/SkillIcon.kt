@@ -6,6 +6,8 @@ import com.willfp.eco.core.config.interfaces.Config
 import com.willfp.eco.core.gui.menu.Menu
 import com.willfp.eco.core.gui.onLeftClick
 import com.willfp.eco.core.gui.onRightClick
+import com.willfp.eco.core.gui.onShiftLeftClick
+import com.willfp.eco.core.gui.onShiftRightClick
 import com.willfp.eco.core.gui.slot
 import com.willfp.eco.core.gui.slot.Slot
 import com.willfp.eco.core.items.Items
@@ -14,10 +16,8 @@ import com.willfp.eco.util.lineWrap
 import com.willfp.ecoskills.api.getSkillLevel
 import com.willfp.ecoskills.plugin
 import com.willfp.ecoskills.skills.Skill
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 private val iconCache = Caffeine.newBuilder()
@@ -49,6 +49,11 @@ class SkillIcon(
                         player
                     ).lineWrap(plugin.configYml.getInt("gui.skill-icon.line-wrap"))
                 )
+                if (!skill.name.equals("wizard", true)) {
+                    addLoreLine(
+                        plugin.configYml.getString("gui.skill-icon.lore-worth")
+                    )
+                }
             }
         }
     }) {
@@ -57,6 +62,14 @@ class SkillIcon(
         }
         onRightClick { player, _, _, _ ->
             skill.levelGUI.open(player)
+        }
+        if (!skill.name.equals("wizard", true)) {
+            onShiftLeftClick { player, _, _, _ ->
+                skill.worthGUI.open(player)
+            }
+            onShiftRightClick { player, _, _, _ ->
+                skill.worthGUI.open(player)
+            }
         }
     }
 

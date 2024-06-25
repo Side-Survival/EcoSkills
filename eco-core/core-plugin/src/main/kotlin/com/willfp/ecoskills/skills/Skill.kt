@@ -7,11 +7,7 @@ import com.willfp.eco.core.data.profile
 import com.willfp.eco.core.map.defaultMap
 import com.willfp.eco.core.placeholder.PlayerPlaceholder
 import com.willfp.eco.core.placeholder.context.placeholderContext
-import com.willfp.eco.util.containsIgnoreCase
-import com.willfp.eco.util.evaluateExpression
-import com.willfp.eco.util.formatEco
-import com.willfp.eco.util.toNiceString
-import com.willfp.eco.util.toNumeral
+import com.willfp.eco.util.*
 import com.willfp.ecoskills.EcoSkillsPlugin
 import com.willfp.ecoskills.Levellable
 import com.willfp.ecoskills.api.getFormattedRequiredXP
@@ -21,6 +17,7 @@ import com.willfp.ecoskills.api.getSkillXP
 import com.willfp.ecoskills.effects.Effects
 import com.willfp.ecoskills.gui.components.SkillIcon
 import com.willfp.ecoskills.gui.menus.SkillLevelGUI
+import com.willfp.ecoskills.gui.menus.WorthGUI
 import com.willfp.ecoskills.libreforge.TriggerGainSkillXp
 import com.willfp.ecoskills.libreforge.TriggerLevelUpSkill
 import com.willfp.ecoskills.plugin
@@ -28,7 +25,6 @@ import com.willfp.ecoskills.stats.Stats
 import com.willfp.ecoskills.util.InvalidConfigurationException
 import com.willfp.ecoskills.util.LevelInjectable
 import com.willfp.ecoskills.util.loadDescriptionPlaceholders
-import com.willfp.libreforge.EmptyProvidedHolder
 import com.willfp.libreforge.NamedValue
 import com.willfp.libreforge.ViolationContext
 import com.willfp.libreforge.conditions.Conditions
@@ -51,11 +47,11 @@ class Skill(
         0.0
     )
 
-    private val xpGainMethods = config.getSubsections("xp-gain-methods").mapNotNull {
+    val xpGainMethods = config.getSubsections("xp-gain-methods").mapNotNull {
         Counters.compile(it, ViolationContext(plugin, "Skill $id xp-gain-methods"))
     }
 
-    private val effects = com.willfp.libreforge.effects.Effects.compile(
+    val effects = com.willfp.libreforge.effects.Effects.compile(
         config.getSubsections("effects"),
         ViolationContext(plugin, "Skill $id effects")
     )
@@ -91,10 +87,13 @@ class Skill(
     )
 
     val levelGUI = SkillLevelGUI(plugin, this)
+    val worthGUI = WorthGUI(plugin, this)
 
     val icon = SkillIcon(this, config.getSubsection("gui"), plugin)
 
     val isHiddenBeforeLevel1 = config.getBool("hide-before-level-1")
+
+    val moneyFormula = config.getString("money-formula")
 
     init {
         if (xpFormula == null && requirements == null) {
@@ -262,10 +261,9 @@ class Skill(
         if (player is Player) {
             effects.trigger(
                 DispatchedTrigger(
-                    player,
+                    player.toDispatcher(),
                     TriggerGainSkillXp,
                     TriggerData(
-                        holder = EmptyProvidedHolder,
                         player = player
                     )
                 ).apply {

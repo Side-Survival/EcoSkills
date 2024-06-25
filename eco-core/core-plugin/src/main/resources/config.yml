@@ -77,6 +77,7 @@ gui:
       - "&8» &e%current_xp%&8/&7%required_xp% &fXP"
       - "&f"
       - "&eClick to view Level Progression!"
+    lore-worth: "&7Shift-Click to see values"
     line-wrap: 32
 
   unknown-skill-icon:
@@ -251,6 +252,21 @@ level-gui:
   # Custom GUI slots; see here for a how-to: https://plugins.auxilor.io/all-plugins/custom-gui-slots
   custom-slots: [ ]
 
+worth-gui:
+  title: 'Test &l%skill%'
+  mask:
+    pattern:
+      - '111111111'
+      - '111111111'
+      - '111111111'
+      - '111111111'
+      - '111111111'
+      - '111111111'
+    materials:
+      - black_stained_glass_pane
+  lore:
+    - '&7XP: &f%xp%'
+    - '&7Money: &f%money%'
 
 # A constant action bar showing health and any other information to all players online
 persistent-action-bar:

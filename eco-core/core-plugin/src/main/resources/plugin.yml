@@ -19,11 +19,6 @@ commands:
       - darbi
     description: Open the jobs menu
     permission: ecoskills.command.skills
-  stats:
-    aliases:
-      - stat
-    description: Open the stats menu
-    permission: ecoskills.command.stats
 
 permissions:
   ecoskills.*:
