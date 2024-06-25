@@ -30,6 +30,10 @@ class SkillXPAccumulator(
             return
         }
 
+        if (!player.isSkillsActive) {
+            return
+        }
+
         if (!skill.conditions.areMet(player.toDispatcher(), EmptyProvidedHolder)) {
             return
         }

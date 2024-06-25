@@ -19,6 +19,8 @@ messages:
   disabled-actionbar: "&fYou have &cdisabled &fthe action bar!"
   enabled-xp-gain-sound: "&fYou have &aenabled &fXP gain sounds!"
   disabled-xp-gain-sound: "&fYou have &cdisabled &fXP gain sounds!"
+  disabled-skill-toggle: "&fYou have &cdisabled &fglobal skills!"
+  enabled-skill-toggle: "&fYou have &aenabled &fglobal skills!"
   actionbar-disabled: "&cThe action bar is disabled on this server."
   resetting-all-players: "&fResetting all players... (this may take a while)"
   reset-all-players: "&fReset all players!"

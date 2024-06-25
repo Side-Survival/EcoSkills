@@ -17,6 +17,7 @@ class CommandSkills(plugin: EcoPlugin) : PluginCommand(
     init {
         this.addSubcommand(CommandToggleActionBar(plugin))
             .addSubcommand(CommandToggleXpGainSound(plugin))
+            .addSubcommand(CommandToggleActive(plugin))
             .addSubcommand(CommandTop(plugin))
     }
 
