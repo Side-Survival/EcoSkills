@@ -130,12 +130,13 @@ class WorthGUI(
             val moneyFormula = skill.moneyFormula
                 .replace("%level%", player.getSkillLevel(skill).toString())
                 .replace("%extra%", extra)
+                .formatEco(player, true)
             val money = evaluateExpression(moneyFormula).toNiceString()
 
             val item = Items.lookup(finalMaterial).item
             val lore = baseLore.map { s ->
                 s.replace("%xp%", multiplier)
-                    .replace("%money%", money)
+                .replace("%money%", money)
             }.toMutableList()
 
             ItemStackBuilder(item)
