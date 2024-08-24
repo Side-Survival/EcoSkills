@@ -83,6 +83,7 @@ class EcoSkillsPlugin : LibreforgePlugin() {
         Filters.register(FilterSkill)
         Filters.register(FilterSkillCrit)
         Filters.register(FilterMagicType)
+        Filters.register(FilterPlayerPlacedReal)
 
         EcoSkillsTopPlaceholder(this).register()
         EcoSkillsSkillTopPlaceholder(this).register()
