@@ -1,6 +1,7 @@
 package com.willfp.ecoskills.libreforge
 
 import com.willfp.eco.core.config.interfaces.Config
+import com.willfp.eco.util.isPlayerPlaced
 import com.willfp.ecoskills.skills.SkillCritListener
 import com.willfp.libreforge.NoCompileData
 import com.willfp.libreforge.filters.Filter
@@ -16,6 +17,9 @@ object FilterPlayerPlacedReal : Filter<NoCompileData, Boolean>("player_placed_re
     override fun isMet(data: TriggerData, value: Boolean, compileData: NoCompileData): Boolean {
         val block = data.block ?: return true
 
-        return !SkillCritListener.placed.contains(BlockVector(block.x, block.y, block.z)) == value
+        if (SkillCritListener.placed.contains(BlockVector(block.x, block.y, block.z)) == value)
+            return true
+
+        return block.isPlayerPlaced == value
     }
 }

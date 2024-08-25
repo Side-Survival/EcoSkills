@@ -3,6 +3,7 @@ package com.willfp.ecoskills.skills
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.util.BlockVector
@@ -44,7 +45,7 @@ object SkillCritListener : Listener {
         ignoreCancelled = true,
         priority = EventPriority.MONITOR
     )
-    fun onBlockBreak(event: BlockPlaceEvent) {
+    fun onBlockBreak(event: BlockBreakEvent) {
         placed.remove(BlockVector(event.block.x, event.block.y, event.block.z))
     }
 }
